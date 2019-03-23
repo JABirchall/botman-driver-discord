@@ -8,7 +8,7 @@ return [
     | Your Discord bot token.
     |
     */
-    'token' => env('SLACK_TOKEN'),
+    'token' => env('DISCORD_TOKEN'),
     'options' => [
         'disableClones' => true,
         'disableEveryone' => true,
