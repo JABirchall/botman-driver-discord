@@ -1,0 +1,23 @@
+{
+  "name": "jabirchall/botman-driver-discord",
+  "description": "A discord driver for botman",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "JABirchall",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "botman/botman": "~2.0",
+    "php": ">=7.1",
+    "charlottedunois/yasmin": "v0.5.1",
+    "illuminate/support": "5.8.x-dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "JABirchall\\BotMan\\Drivers\\Discord\\": "src/"
+    }
+  }
+}
