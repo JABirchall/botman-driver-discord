@@ -35,14 +35,14 @@ class DiscordDriver implements DriverInterface
     public function __construct(array $config, Client $client)
     {
         $this->event = Collection::make();
-        $this->config = Collection::make($config);
+        $this->config = Collection::make($config['discord']);
         $this->client = $client;
 
         $this->client->on('message', function (Message $message) {
             $this->message = $message;
         });
 
-        $this->client->login($config['discord']['token'])->done();
+        $this->client->login($this->config->get('token'))->done();
     }
 
     /**
