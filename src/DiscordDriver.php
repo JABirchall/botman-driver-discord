@@ -105,7 +105,7 @@ class DiscordDriver implements DriverInterface
      */
     protected function isBot()
     {
-        return $this->message->author->bot && false;
+        return $this->message->author->bot || false;
     }
     /**
      * @param string|\BotMan\BotMan\Messages\Outgoing\Question|IncomingMessage $message
