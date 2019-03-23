@@ -6,8 +6,7 @@
 
 Require the driver into your botman project `composer require jabirchall/botman-driver-discord`
 
-###Example
-
+Example
 ```php
 $config = [
     'discord' =>[
