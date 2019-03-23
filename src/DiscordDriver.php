@@ -6,6 +6,7 @@ use CharlotteDunois\Yasmin\Client;
 use CharlotteDunois\Yasmin\Models\Message;
 use BotMan\BotMan\Users\User;
 use BotMan\BotMan\BotManFactory;
+use CharlotteDunois\Yasmin\Models\MessageEmbed;
 use Illuminate\Support\Collection;
 use React\Promise\PromiseInterface;
 use BotMan\BotMan\Messages\Incoming\Answer;
@@ -123,11 +124,9 @@ class DiscordDriver implements DriverInterface
             $attachment = $message->getAttachment();
             if (! is_null($attachment)) {
                 if ($attachment instanceof Image) {
-                    $payload['embed'] = [
-                        'image' => [
-                            'url' => $attachment->getUrl(),
-                        ],
-                    ];
+
+                    $payload['embed'] = new MessageEmbed();
+                    $payload['embed']->setImage($attachment->getUrl());
                 }
             }
         } else {
