@@ -1,7 +1,5 @@
 # botman-driver-discord
 
-# NimdaDiscord
-
 ## Getting Started
 
 Require the driver into your botman project `composer require jabirchall/botman-driver-discord`
