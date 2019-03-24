@@ -39,6 +39,7 @@ $loop->run();
 
 * Botman 2.*
 * PHP version 7.1+
+* mbstring
 * A discord bot token
 
 ## Contributing
