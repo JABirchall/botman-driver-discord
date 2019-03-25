@@ -13,7 +13,7 @@
     "botman/botman": "~2.0",
     "php": ">=7.1",
     "charlottedunois/yasmin": "v0.5.1",
-    "illuminate/support": "5.8.x-dev"
+    "illuminate/support": "^5.7"
   },
   "autoload": {
     "psr-4": {
