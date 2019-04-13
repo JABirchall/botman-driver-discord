@@ -84,7 +84,7 @@ class DiscordDriver implements DriverInterface
      */
     public function getConversationAnswer(IncomingMessage $message)
     {
-        return Answer::create($this->message->content)->setMessage($message);
+        return Answer::create($this->message->content ?? null)->setMessage($message);
     }
     /**
      * Retrieve the chat message.
@@ -93,9 +93,9 @@ class DiscordDriver implements DriverInterface
      */
     public function getMessages()
     {
-        $messageText = $this->message->content;
-        $user_id = $this->message->author->id;
-        $channel_id = $this->message->channel->id;
+        $messageText = $this->message->content ?? null;
+        $user_id = $this->message->author->id  ?? null;
+        $channel_id = $this->message->channel->id  ?? null;
         $message = new IncomingMessage($messageText, $user_id, $channel_id, $this->message);
         $message->setIsFromBot($this->isBot());
         return [$message];
@@ -105,7 +105,7 @@ class DiscordDriver implements DriverInterface
      */
     protected function isBot()
     {
-        return $this->message->author->bot || false;
+        return $this->message->author->bot ?? false;
     }
     /**
      * @param string|\BotMan\BotMan\Messages\Outgoing\Question|IncomingMessage $message
