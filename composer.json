@@ -12,8 +12,9 @@
   "require": {
     "botman/botman": "~2.0",
     "php": ">=7.1",
-    "charlottedunois/yasmin": "v0.5.1",
-    "illuminate/support": "5.8.x-dev"
+    "charlottedunois/yasmin": "~v0.6",
+    "illuminate/support": "^5.7",
+    "react/socket": "1.2.0 as 0.4.9"
   },
   "autoload": {
     "psr-4": {
