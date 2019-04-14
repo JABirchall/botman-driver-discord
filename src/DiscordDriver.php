@@ -140,7 +140,11 @@ class DiscordDriver implements DriverInterface
      */
     public function sendPayload($payload)
     {
-        return $this->message->channel->send($payload['message'], ['embed' => $payload['embed']]);
+        if(!empty($this->message)){
+            return $this->message->channel->send($payload['message'], ['embed' => $payload['embed']]);
+        } else {
+            return;
+        }
     }
     /**
      * @return bool
