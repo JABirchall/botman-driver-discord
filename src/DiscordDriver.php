@@ -159,6 +159,7 @@ class DiscordDriver implements DriverInterface
      */
     public function types(IncomingMessage $matchingMessage)
     {
+        $matchingMessage->getPayload()->channel->startTyping();
     }
     /**
      * Retrieve User information.
@@ -192,7 +193,7 @@ class DiscordDriver implements DriverInterface
      */
     public function sendRequest($endpoint, array $parameters, IncomingMessage $matchingMessage)
     {
-        //Todo
+        return false;
     }
     /**
      * Tells if the stored conversation callbacks are serialized.
