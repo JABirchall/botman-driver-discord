@@ -2,19 +2,20 @@
 
 namespace JABirchall\BotMan\Drivers\Discord;
 
+use BotMan\BotMan\BotManFactory;
+use BotMan\BotMan\Interfaces\DriverEventInterface;
+use BotMan\BotMan\Interfaces\DriverInterface;
+use BotMan\BotMan\Messages\Attachments\Image;
+use BotMan\BotMan\Messages\Incoming\Answer;
+use BotMan\BotMan\Messages\Incoming\IncomingMessage;
+use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
+use BotMan\BotMan\Messages\Outgoing\Question;
+use BotMan\BotMan\Users\User;
 use CharlotteDunois\Yasmin\Client;
 use CharlotteDunois\Yasmin\Models\Message;
-use BotMan\BotMan\Users\User;
-use BotMan\BotMan\BotManFactory;
 use CharlotteDunois\Yasmin\Models\MessageEmbed;
 use Illuminate\Support\Collection;
 use React\Promise\PromiseInterface;
-use BotMan\BotMan\Messages\Incoming\Answer;
-use BotMan\BotMan\Interfaces\DriverInterface;
-use BotMan\BotMan\Messages\Attachments\Image;
-use BotMan\BotMan\Interfaces\DriverEventInterface;
-use BotMan\BotMan\Messages\Incoming\IncomingMessage;
-use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 
 class DiscordDriver implements DriverInterface
 {
@@ -22,7 +23,7 @@ class DiscordDriver implements DriverInterface
     protected $message;
     /** @var Collection */
     protected $event;
-    /** @var Collection  */
+    /** @var Collection */
     protected $config;
     /** @var Client */
     protected $client;
@@ -53,6 +54,7 @@ class DiscordDriver implements DriverInterface
     {
         $this->bot_id = $this->client->user->tag;
     }
+
     /**
      * Return the driver name.
      *
@@ -62,6 +64,7 @@ class DiscordDriver implements DriverInterface
     {
         return self::DRIVER_NAME;
     }
+
     /**
      * Determine if the request is for this driver.
      *
@@ -71,6 +74,7 @@ class DiscordDriver implements DriverInterface
     {
         return false;
     }
+
     /**
      * @return bool|DriverEventInterface
      */
@@ -78,14 +82,16 @@ class DiscordDriver implements DriverInterface
     {
         return false;
     }
+
     /**
-     * @param  IncomingMessage $message
+     * @param IncomingMessage $message
      * @return Answer
      */
     public function getConversationAnswer(IncomingMessage $message)
     {
         return Answer::create($this->message->content ?? null)->setMessage($message);
     }
+
     /**
      * Retrieve the chat message.
      *
@@ -94,12 +100,13 @@ class DiscordDriver implements DriverInterface
     public function getMessages()
     {
         $messageText = $this->message->content ?? null;
-        $user_id = $this->message->author->id  ?? null;
-        $channel_id = $this->message->channel->id  ?? null;
+        $user_id = $this->message->author->id ?? null;
+        $channel_id = $this->message->channel->id ?? null;
         $message = new IncomingMessage($messageText, $user_id, $channel_id, $this->message);
         $message->setIsFromBot($this->isBot());
         return [$message];
     }
+
     /**
      * @return bool
      */
@@ -107,8 +114,9 @@ class DiscordDriver implements DriverInterface
     {
         return $this->message->author->bot ?? false;
     }
+
     /**
-     * @param string|\BotMan\BotMan\Messages\Outgoing\Question|IncomingMessage $message
+     * @param string|Question|IncomingMessage $message
      * @param IncomingMessage $matchingMessage
      * @param array $additionalParameters
      * @return mixed
@@ -118,11 +126,12 @@ class DiscordDriver implements DriverInterface
         $payload = [
             'message' => '',
             'embed' => '',
+            'originalMessage' => $matchingMessage->getPayload(),
         ];
         if ($message instanceof OutgoingMessage) {
             $payload['message'] = $message->getText();
             $attachment = $message->getAttachment();
-            if (! is_null($attachment)) {
+            if (!is_null($attachment)) {
                 if ($attachment instanceof Image) {
 
                     $payload['embed'] = new MessageEmbed();
@@ -134,24 +143,28 @@ class DiscordDriver implements DriverInterface
         }
         return $payload;
     }
+
     /**
      * @param mixed $payload
      * @return PromiseInterface
      */
     public function sendPayload($payload)
     {
-        if(empty($this->message)){
-            return;
+        if (empty($this->message)) {
+            return null;
         }
-        return $this->message->channel->send($payload['message'], ['embed' => $payload['embed']]);
+
+        return $payload['originalMessage']->channel->send($payload['message'], ['embed' => $payload['embed']]);
     }
+
     /**
      * @return bool
      */
     public function isConfigured()
     {
-        return ! is_null($this->config->get('token'));
+        return $this->config->has('token');
     }
+
     /**
      * Send a typing indicator.
      * @param IncomingMessage $matchingMessage
@@ -161,6 +174,7 @@ class DiscordDriver implements DriverInterface
     {
         $matchingMessage->getPayload()->channel->startTyping();
     }
+
     /**
      * Retrieve User information.
      * @param IncomingMessage $matchingMessage
@@ -170,12 +184,13 @@ class DiscordDriver implements DriverInterface
     {
         $user = $this->client->users->get($matchingMessage->getSender());
 
-        if (! is_null($user)) {
+        if (!is_null($user)) {
             return new User($matchingMessage->getSender(), '', '', $user->username);
         }
 
         return new User($this->message->author->id, '', '', $this->message->author->username);
     }
+
     /**
      * @return Client
      */
@@ -183,18 +198,20 @@ class DiscordDriver implements DriverInterface
     {
         return $this->client;
     }
+
     /**
      * Low-level method to perform driver specific API requests.
      *
      * @param $endpoint
      * @param array $parameters
      * @param IncomingMessage $matchingMessage
-     * @return \React\Promise\PromiseInterface
+     * @return PromiseInterface
      */
     public function sendRequest($endpoint, array $parameters, IncomingMessage $matchingMessage)
     {
         return false;
     }
+
     /**
      * Tells if the stored conversation callbacks are serialized.
      *
@@ -204,6 +221,7 @@ class DiscordDriver implements DriverInterface
     {
         return false;
     }
+
     /**
      * Load factory extensions.
      */
