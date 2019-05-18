@@ -9,7 +9,17 @@ Example
 $config = [
     'discord' =>[
         'token' => "your token",
-
+        'options' => [
+            'disableClones' => true,
+            'disableEveryone' => true,
+            'fetchAllMembers' => false,
+            'messageCache' => true,
+            'messageCacheLifetime' => 600,
+            'messageSweepInterval' => 600,
+            'presenceCache' => false,
+            'userSweepInterval' => 600,
+            'ws.disabledEvents' => [],
+        ],
     ],
 ];
 

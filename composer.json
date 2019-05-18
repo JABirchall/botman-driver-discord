@@ -10,11 +10,10 @@
     }
   ],
   "require": {
-    "botman/botman": "~2.0",
+    "botman/botman": "~2.5.0",
     "php": ">=7.1",
     "charlottedunois/yasmin": "~v0.6",
-    "illuminate/support": "^5.7",
-    "react/socket": "1.2.0 as 0.8.13"
+    "illuminate/support": "^5.7"
   },
   "autoload": {
     "psr-4": {

@@ -133,7 +133,6 @@ class DiscordDriver implements DriverInterface
             $attachment = $message->getAttachment();
             if (!is_null($attachment)) {
                 if ($attachment instanceof Image) {
-
                     $payload['embed'] = new MessageEmbed();
                     $payload['embed']->setImage($attachment->getUrl());
                 }
